@@ -34,7 +34,7 @@ public class UserController {
         }
         else
         {
-            return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

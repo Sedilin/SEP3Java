@@ -31,16 +31,15 @@ public class UserService {
 
     public User addUser(User user)
     {
-        Optional<User> existing = getUserById(user.getId());
-        if (existing.isPresent())
-        {
-            return null;
+        for (User existing : users) {
+            if (existing.getUserName().equals(user.getUserName()))
+            {
+                return null;
+            }
         }
-        else
-        {
-            users.add(user);
-            return user;
-        }
+        user.setId(users.size() + 1);
+        users.add(user);
+        return user;
     }
 
 }
