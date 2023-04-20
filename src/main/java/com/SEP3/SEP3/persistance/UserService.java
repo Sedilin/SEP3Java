@@ -42,4 +42,9 @@ public class UserService {
         return user;
     }
 
+    public List<User> getAllUsers()
+    {
+        return users;
+    }
+
 }
