@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/user")
 public class UserController {
 
     private UserService userService;
@@ -34,7 +34,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<User>> getAllUsers()
     {
         List<User> success = userService.getAllUsers();
@@ -46,5 +46,19 @@ public class UserController {
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping()
+    public ResponseEntity<User> getUserByUsername( String username)
+    {
+        List<User> users = getAllUsers().getBody();
+        for (User user: users)
+        {
+            if (user.getUserName().equals(username))
+            {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
