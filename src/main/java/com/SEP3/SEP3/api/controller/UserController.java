@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -48,17 +48,14 @@ public class UserController {
         }
     }
 
-    @GetMapping()
-    public ResponseEntity<User> getUserByUsername( String username)
+    @GetMapping("/userName")
+    public ResponseEntity<User> getUserByUsername( @RequestParam("userName") String userName)
     {
-        List<User> users = getAllUsers().getBody();
-        for (User user: users)
-        {
-            if (user.getUserName().equals(username))
-            {
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        Optional<User> existing = userService.getUserByUsername(userName);
+        if (existing.isPresent())
+            return new ResponseEntity<>(existing.get(), HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
 }

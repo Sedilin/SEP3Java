@@ -41,10 +41,19 @@ public class UserService {
         users.add(user);
         return user;
     }
-
+   public Optional<User> getUserByUsername(String username) {
+        Optional<User> existing = Optional.empty();
+        for (User user : users)
+            if (user.getUserName().equals(username)) {
+                existing = Optional.of(user);
+            }
+        return existing;
+   }
     public List<User> getAllUsers()
     {
         return users;
     }
+
+
 
 }
