@@ -4,6 +4,7 @@ public class User {
     private long Id;
     private String UserName;
     private String Password;
+    private String UserType;
 
     public User(String UserName, String Password) {
         this.UserName = UserName;
@@ -32,5 +33,12 @@ public class User {
 
     public void setPassword(String password) {
         Password = password;
+    }
+    public String getUserType() {
+        return UserType;
+    }
+
+    public void setUserType(String userType) {
+        UserType = userType;
     }
 }
