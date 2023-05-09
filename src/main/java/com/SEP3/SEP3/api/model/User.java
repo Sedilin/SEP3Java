@@ -1,7 +1,7 @@
 package com.SEP3.SEP3.api.model;
 
 public class User {
-    private long Id;
+    private int Id;
     private String UserName;
     private String Password;
     private String UserType;
@@ -15,7 +15,7 @@ public class User {
         return Id;
     }
 
-    public void setId(long Id) {
+    public void setId(int Id) {
         this.Id = Id;
     }
 
