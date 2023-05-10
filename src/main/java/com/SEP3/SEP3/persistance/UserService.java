@@ -21,11 +21,11 @@ public class UserService {
 
     public User addUser(User user)
     {
-        users.addUser(user);
-        return user;
+       return users.addUser(user);
     }
-   public User getUserByUsername(String username) {
-        return users.getByUsername();
+
+   public Optional<User> getUserByUsername(String username) {
+        return Optional.of(users.getByUsername(username));
    }
     public List<User> getAllUsers()
     {

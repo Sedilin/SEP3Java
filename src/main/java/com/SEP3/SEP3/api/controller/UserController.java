@@ -24,13 +24,16 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> addNewUser(@RequestBody User user)
     {
-        User success = userService.addUser(user);
-        if (success != null)
+        Optional<User> success = Optional.of(userService.addUser(user));
+        if (success.isPresent())
         {
-            return new ResponseEntity<>(success, HttpStatus.OK);
+            System.out.println("1");
+            return new ResponseEntity<>(success.get(), HttpStatus.OK);
+
         }
         else
         {
+            System.out.println("2");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

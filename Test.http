@@ -1,0 +1,4 @@
+Content-Type:
+POST http://localhost:8080/user?userName=Kevin&password=1234&userType=user
+
+}
