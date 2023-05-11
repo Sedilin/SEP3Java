@@ -1,5 +1,6 @@
 package com.SEP3.SEP3.api.controller;
 
+import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 import com.SEP3.SEP3.persistance.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,11 @@ public class UserController {
         Optional<User> success = Optional.of(userService.addUser(user));
         if (success.isPresent())
         {
-            System.out.println("1");
             return new ResponseEntity<>(success.get(), HttpStatus.OK);
 
         }
         else
         {
-            System.out.println("2");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -59,6 +58,20 @@ public class UserController {
         if (existing.isPresent())
             return new ResponseEntity<>(existing.get(), HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/newTutor")
+    public ResponseEntity<User> becomeTutor(@RequestBody UserToTutorDto dto)
+    {
+        Optional<User> success = Optional.of(userService.becomeTutor(dto.getUser(), dto.getCourse(), dto.getDescription()));
+        if (success.isPresent())
+        {
+            return new ResponseEntity<>(success.get(), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

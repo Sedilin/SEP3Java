@@ -95,4 +95,46 @@ public class UserDAOImpl implements UserDAO {
         }
         return user;
     }
+
+    @Override
+    public User becomeTutor(User user, String course, String description) {
+        try (Connection connection = DbConnection.getConnection()) {
+
+            //Adds description
+            PreparedStatement addDescription = connection.prepareStatement("INSERT INTO Descriptions(user_id, description) VALUES (?, ?)");
+            addDescription.setInt(1, user.getId());
+            addDescription.setString(2, description);
+            addDescription.executeUpdate();
+
+            //Search for course id
+            int course_id = 0;
+
+            PreparedStatement getCourse = connection.prepareStatement("Select * from Courses where name = ?");
+            getCourse.setString(1, course);
+
+            ResultSet resultSet = getCourse.executeQuery();
+
+            course_id = resultSet.getInt("id");
+
+            //Add course id to a user
+            PreparedStatement addTutor = connection.prepareStatement("INSERT INTO Tutors(user_id, course_id) VALUES (?, ?)");
+            addTutor.setInt(1, user.getId());
+            addTutor.setInt(2, course_id);
+
+            addTutor.executeUpdate();
+
+            //Change type of user
+            PreparedStatement changeToTutor = connection.prepareStatement("Update Users set userType='Tutor' where id = ?" );
+            changeToTutor.setInt(1, user.getId());
+
+            changeToTutor.executeUpdate();
+
+            connection.close();
+
+            return getByUsername(user.getUserName());
+        } catch (SQLException throwable) {
+
+            throw new RuntimeException(throwable);
+        }
+    }
 }

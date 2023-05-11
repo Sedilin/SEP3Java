@@ -33,5 +33,7 @@ public class UserService {
     }
 
 
-
+    public User becomeTutor(User user, String course, String description) {
+        return users.becomeTutor(user, course, description);
+    }
 }
