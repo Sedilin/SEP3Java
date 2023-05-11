@@ -1,11 +1,6 @@
 package com.SEP3.SEP3.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonEncoding;
-
-import java.io.Serializable;
-
-public class User implements Serializable {
+public class User {
     private int Id;
     private String UserName;
     private String Password;
