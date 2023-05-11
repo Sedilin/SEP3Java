@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String Password;
     private String UserType;
 
-    public User(){}
+    private User(){}
 
     public User(String UserName, String Password) {
         this.UserName = UserName;
