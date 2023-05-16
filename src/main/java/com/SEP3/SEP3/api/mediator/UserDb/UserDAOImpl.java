@@ -172,6 +172,11 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(2, "Tutor");
             ResultSet resultSet = statement.executeQuery();
 
+            if (resultSet.getString("username") == null)
+            {
+                return null;
+            }
+
             user = new User(resultSet.getString("username"),
                     resultSet.getString("password"));
 

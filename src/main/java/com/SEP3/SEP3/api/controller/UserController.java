@@ -77,10 +77,7 @@ public class UserController {
     public ResponseEntity<User> getTutorByUsername(@RequestParam("userName") String username) {
         Optional<User> existing = userService.getTutorByUsername(username);
         if (existing.isPresent()) {
-            User user = existing.get();
-            if (user.getUserType().equals("Tutor")) {
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
+                return new ResponseEntity<>(existing.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
