@@ -1,5 +1,7 @@
 package com.SEP3.SEP3.api.mediator.UserDb;
 
+import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
+import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 
 import java.util.List;
@@ -16,5 +18,5 @@ public interface UserDAO {
 
     User tutorByUsername (String username);
 
-    String getDescription(String userName);
+    TutorInformationDto getTutor(String userName);
 }

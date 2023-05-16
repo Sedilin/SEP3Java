@@ -2,6 +2,8 @@ package com.SEP3.SEP3.persistance;
 
 import com.SEP3.SEP3.api.mediator.UserDb.UserDAO;
 import com.SEP3.SEP3.api.mediator.UserDb.UserDAOImpl;
+import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
+import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +50,7 @@ public class UserService {
 
 
 
-    public String getDescription(String userName) {
-        return users.getDescription(userName);
+    public TutorInformationDto getTutor(String userName) {
+        return users.getTutor(userName);
     }
 }

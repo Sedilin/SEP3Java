@@ -1,5 +1,6 @@
 package com.SEP3.SEP3.api.controller;
 
+import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 import com.SEP3.SEP3.persistance.UserService;
@@ -82,10 +83,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/description")
-    public ResponseEntity<String> getDescription( @RequestParam("userName") String userName)
+    @GetMapping("/tutor")
+    public ResponseEntity<TutorInformationDto> GetTutorAsync( @RequestParam("userName") String userName)
     {
-        Optional<String> existing = Optional.of(userService.getDescription(userName));
+        Optional<TutorInformationDto> existing = Optional.of(userService.getTutor(userName));
         if (existing.isPresent())
             return new ResponseEntity<>(existing.get(), HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

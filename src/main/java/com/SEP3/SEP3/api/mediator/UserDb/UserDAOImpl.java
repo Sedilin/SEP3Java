@@ -2,12 +2,11 @@ package com.SEP3.SEP3.api.mediator.UserDb;
 
 import ch.qos.logback.core.net.SMTPAppenderBase;
 import com.SEP3.SEP3.api.mediator.DbConnection;
+import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
+import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,8 +140,8 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public String getDescription(String userName) {
-        String description = "";
+    public TutorInformationDto getTutor(String userName) {
+        TutorInformationDto tutor;
         try (Connection connection = DbConnection.getConnection()) {
 
             PreparedStatement getUserId = connection.prepareStatement("Select * from Users where username = ?");
@@ -151,16 +150,29 @@ public class UserDAOImpl implements UserDAO {
 
             int userId = resultSet.getInt("id");
 
-            PreparedStatement statement = connection.prepareStatement("Select * from Descriptions where user_id = ?");
-            statement.setInt(1, userId);
-            ResultSet resultSet2 = statement.executeQuery();
+            User user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("userType"));
+            user.setId(userId);
 
-            description = resultSet2.getString("description");
+            PreparedStatement getDescription = connection.prepareStatement("Select * from Descriptions where user_id = ?");
+            getDescription.setInt(1, userId);
+            ResultSet resultSet2 = getDescription.executeQuery();
+
+            String description = resultSet2.getString("description");
+
+            PreparedStatement getCourses = connection.prepareStatement("Select name from Courses where id in (SELECT course_id from Tutors where user_id = ?)");
+            getCourses.setInt(1, userId);
+            ResultSet resultSet3 = getCourses.executeQuery();
+
+            tutor = new TutorInformationDto(user, description);
+            while (resultSet3.next())
+            {
+                tutor.addCourse(resultSet3.getString("name"));
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return description;
+        return tutor;
     }
 
     @Override
