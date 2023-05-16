@@ -74,4 +74,13 @@ public class UserController {
         }
     }
 
+    @GetMapping("/description")
+    public ResponseEntity<String> getDescription( @RequestParam("userName") String userName)
+    {
+        Optional<String> existing = Optional.of(userService.getDescription(userName));
+        if (existing.isPresent())
+            return new ResponseEntity<>(existing.get(), HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

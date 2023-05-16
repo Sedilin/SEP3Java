@@ -36,4 +36,8 @@ public class UserService {
     public User becomeTutor(User user, String course, String description) {
         return users.becomeTutor(user, course, description);
     }
+
+    public String getDescription(String userName) {
+        return users.getDescription(userName);
+    }
 }

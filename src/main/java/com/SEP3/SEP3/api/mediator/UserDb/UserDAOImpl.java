@@ -137,4 +137,27 @@ public class UserDAOImpl implements UserDAO {
             throw new RuntimeException(throwable);
         }
     }
+
+    @Override
+    public String getDescription(String userName) {
+        String description = "";
+        try (Connection connection = DbConnection.getConnection()) {
+
+            PreparedStatement getUserId = connection.prepareStatement("Select * from Users where username = ?");
+            getUserId.setString(1, userName);
+            ResultSet resultSet = getUserId.executeQuery();
+
+            int userId = resultSet.getInt("id");
+
+            PreparedStatement statement = connection.prepareStatement("Select * from Descriptions where user_id = ?");
+            statement.setInt(1, userId);
+            ResultSet resultSet2 = statement.executeQuery();
+
+            description = resultSet2.getString("description");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return description;
+    }
 }

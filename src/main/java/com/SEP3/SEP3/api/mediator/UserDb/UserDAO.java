@@ -13,4 +13,6 @@ public interface UserDAO {
     User getByUsername(String username);
 
     User becomeTutor(User user, String course, String description);
+
+    String getDescription(String userName);
 }
