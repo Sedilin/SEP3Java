@@ -73,6 +73,17 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/tutorByUsername")
+    public ResponseEntity<User> getTutorByUsername(@RequestParam("userName") String username) {
+        Optional<User> existing = userService.getTutorByUsername(username);
+        if (existing.isPresent()) {
+            User user = existing.get();
+            if (user.getUserType().equals("Tutor")) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
     @GetMapping("/description")
     public ResponseEntity<String> getDescription( @RequestParam("userName") String userName)

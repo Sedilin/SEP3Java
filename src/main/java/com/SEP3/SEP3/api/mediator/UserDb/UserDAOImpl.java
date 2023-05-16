@@ -1,5 +1,6 @@
 package com.SEP3.SEP3.api.mediator.UserDb;
 
+import ch.qos.logback.core.net.SMTPAppenderBase;
 import com.SEP3.SEP3.api.mediator.DbConnection;
 import com.SEP3.SEP3.api.model.User;
 
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class UserDAOImpl implements UserDAO {
     @Override
@@ -160,4 +162,27 @@ public class UserDAOImpl implements UserDAO {
         }
         return description;
     }
+
+    @Override
+    public User tutorByUsername(String username) {
+        User user;
+        try (Connection connection = DbConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users WHERE username = ? AND userType = ?");
+            statement.setString(1, username);
+            statement.setString(2, "Tutor");
+            ResultSet resultSet = statement.executeQuery();
+
+            user = new User(resultSet.getString("username"),
+                    resultSet.getString("password"));
+
+            user.setId(resultSet.getInt("id"));
+            user.setUserType(resultSet.getString("userType"));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
+
 }

@@ -37,6 +37,17 @@ public class UserService {
         return users.becomeTutor(user, course, description);
     }
 
+    public Optional<User> getTutorByUsername(String username) {
+        User tutor = users.tutorByUsername(username);
+        if (tutor != null && tutor.getUserType().equals("Tutor")) {
+            return Optional.of(tutor);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+
+
     public String getDescription(String userName) {
         return users.getDescription(userName);
     }
