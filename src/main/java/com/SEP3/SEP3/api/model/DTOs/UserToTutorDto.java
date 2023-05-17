@@ -11,7 +11,10 @@ public class UserToTutorDto {
         Course = course;
         Description = description;
     }
-
+   public UserToTutorDto(User user, String course) {
+        this.User=user;
+        Course = course;
+   }
     public User getUser() {
         return User;
     }

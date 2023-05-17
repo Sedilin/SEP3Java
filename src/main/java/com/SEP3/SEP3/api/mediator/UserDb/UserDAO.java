@@ -19,4 +19,6 @@ public interface UserDAO {
     User tutorByUsername (String username);
 
     TutorInformationDto getTutor(String userName);
+
+
 }

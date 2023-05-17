@@ -7,7 +7,6 @@ import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +46,6 @@ public class UserService {
             return Optional.empty();
         }
     }
-
-
 
     public TutorInformationDto getTutor(String userName) {
         return users.getTutor(userName);
