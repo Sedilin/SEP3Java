@@ -34,6 +34,18 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping()
+    public ResponseEntity<List<String>> getAllCourses()
+    {
+        List<String> courses = courseService.geAllCourses();
+        if (!courses.isEmpty())
+        {
+            return new ResponseEntity<>(courses, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }

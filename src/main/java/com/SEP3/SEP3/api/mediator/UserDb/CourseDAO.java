@@ -7,4 +7,5 @@ import java.util.List;
 public interface CourseDAO {
 
     List<UserToTutorDto> tutorByCourse (String course);
+    List<String> getAllCourses();
 }

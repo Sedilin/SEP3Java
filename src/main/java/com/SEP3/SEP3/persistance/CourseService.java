@@ -21,4 +21,5 @@ public class CourseService {
     public List<UserToTutorDto> getTutorByCourse (String course) {
         return courses.tutorByCourse(course);
     }
+    public List<String> geAllCourses() {return courses.getAllCourses();}
 }

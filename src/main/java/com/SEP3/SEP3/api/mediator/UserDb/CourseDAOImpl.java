@@ -65,4 +65,25 @@ public class CourseDAOImpl implements CourseDAO {
 
         return tutors;
     }
+
+    @Override
+    public List<String> getAllCourses() {
+        List<String> courses = new ArrayList<>();
+
+        try (Connection connection = DbConnection.getConnection()) {
+            // Find the course ID by name
+            PreparedStatement courseStatement = connection.prepareStatement("SELECT name FROM Courses");
+            ResultSet result = courseStatement.executeQuery();
+
+            while (result.next())
+            {
+                courses.add(result.getString("name"));
+            }
+
+            return courses;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
