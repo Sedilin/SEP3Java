@@ -1,4 +1,4 @@
-package com.SEP3.SEP3.api.mediator.UserDb;
+package com.SEP3.SEP3.api.mediator.CourseDb;
 
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 

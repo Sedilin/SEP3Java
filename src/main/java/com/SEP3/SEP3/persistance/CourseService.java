@@ -1,9 +1,7 @@
 package com.SEP3.SEP3.persistance;
 
-import com.SEP3.SEP3.api.mediator.UserDb.CourseDAO;
-import com.SEP3.SEP3.api.mediator.UserDb.CourseDAOImpl;
-import com.SEP3.SEP3.api.mediator.UserDb.UserDAO;
-import com.SEP3.SEP3.api.mediator.UserDb.UserDAOImpl;
+import com.SEP3.SEP3.api.mediator.CourseDb.CourseDAO;
+import com.SEP3.SEP3.api.mediator.CourseDb.CourseDAOImpl;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import org.springframework.stereotype.Service;
 
