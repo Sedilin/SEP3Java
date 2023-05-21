@@ -16,9 +16,12 @@ public interface UserDAO {
 
     User becomeTutor(User user, String course, String description);
 
+
     User tutorByUsername (String username);
 
     TutorInformationDto getTutor(String userName);
+
+     User updateProfile(User user, String description, String course);
 
 
 }

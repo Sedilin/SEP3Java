@@ -74,6 +74,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/tutorByUsername")
     public ResponseEntity<User> getTutorByUsername(@RequestParam("userName") String username) {
         Optional<User> existing = userService.getTutorByUsername(username);
@@ -92,6 +93,15 @@ public class UserController {
         else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PutMapping("/profile")
+    public ResponseEntity<User> updateProfile(@RequestBody UserToTutorDto dto) {
+        User updatedUser = userService.updateProfile(dto.getUser(), dto.getDescription(), dto.getCourse());
+        if (updatedUser != null) {
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 

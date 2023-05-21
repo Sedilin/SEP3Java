@@ -1,19 +1,18 @@
 package com.SEP3.SEP3.api.controller;
 
+import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
+import com.SEP3.SEP3.api.model.User;
 import com.SEP3.SEP3.persistance.CourseService;
-import com.SEP3.SEP3.persistance.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/course")
@@ -46,6 +45,21 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/delete/{course_id}")
+    public ResponseEntity<UserToTutorDto> deleteCourse(@RequestParam("course_id") UserToTutorDto dto)
+    {
+        Optional<UserToTutorDto> success = Optional.of(courseService.deleteCourse(dto.getUser(), dto.getCourse(), dto.getDescription()));
+        if (success.isPresent())
+        {
+            return new ResponseEntity<>(success.get(), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 
 }

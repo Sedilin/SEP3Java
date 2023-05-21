@@ -38,6 +38,8 @@ public class UserService {
         return users.becomeTutor(user, course, description);
     }
 
+
+
     public Optional<User> getTutorByUsername(String username) {
         User tutor = users.tutorByUsername(username);
         if (tutor != null) {
@@ -50,4 +52,11 @@ public class UserService {
     public TutorInformationDto getTutor(String userName) {
         return users.getTutor(userName);
     }
+
+
+    public User updateProfile (User user, String description, String course) {
+        return users.updateProfile(user, course, description);
+    }
+
+
 }

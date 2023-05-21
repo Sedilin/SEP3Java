@@ -15,6 +15,7 @@ public class TutorInformationDto {
         this.User = user;
         Description = description;
     }
+
     public List<String> getCourses() {
         return Courses;
     }

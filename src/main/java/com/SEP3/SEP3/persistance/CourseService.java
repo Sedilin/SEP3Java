@@ -2,7 +2,9 @@ package com.SEP3.SEP3.persistance;
 
 import com.SEP3.SEP3.api.mediator.CourseDb.CourseDAO;
 import com.SEP3.SEP3.api.mediator.CourseDb.CourseDAOImpl;
+import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
+import com.SEP3.SEP3.api.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +18,18 @@ public class CourseService {
     public CourseService() {
         courses = new CourseDAOImpl();
     }
-    public List<UserToTutorDto> getTutorByCourse (String course) {
+
+    public List<UserToTutorDto> getTutorByCourse(String course) {
         return courses.tutorByCourse(course);
     }
-    public List<String> geAllCourses() {return courses.getAllCourses();}
+
+    public List<String> geAllCourses() {
+        return courses.getAllCourses();
+    }
+
+    public UserToTutorDto deleteCourse (User user, String course, String description) {
+        return courses.deleteCourse(user, course, description);
+    }
 }
+
+

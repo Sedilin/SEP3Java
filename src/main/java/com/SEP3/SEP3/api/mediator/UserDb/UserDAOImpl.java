@@ -140,6 +140,32 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public User tutorByUsername(String username) {
+        User user;
+        try (Connection connection = DbConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users WHERE username = ? AND userType = ?");
+            statement.setString(1, username);
+            statement.setString(2, "Tutor");
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.getString("username") == null)
+            {
+                return null;
+            }
+
+            user = new User(resultSet.getString("username"),
+                    resultSet.getString("password"));
+
+            user.setId(resultSet.getInt("id"));
+            user.setUserType(resultSet.getString("userType"));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
+    @Override
     public TutorInformationDto getTutor(String userName) {
         TutorInformationDto tutor;
         try (Connection connection = DbConnection.getConnection()) {
@@ -175,33 +201,41 @@ public class UserDAOImpl implements UserDAO {
         return tutor;
     }
 
-
-
     @Override
-    public User tutorByUsername(String username) {
-        User user;
-        try (Connection connection = DbConnection.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users WHERE username = ? AND userType = ?");
-            statement.setString(1, username);
-            statement.setString(2, "Tutor");
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.getString("username") == null)
-            {
-                return null;
-            }
-
-            user = new User(resultSet.getString("username"),
-                    resultSet.getString("password"));
-
-            user.setId(resultSet.getInt("id"));
-            user.setUserType(resultSet.getString("userType"));
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public User updateProfile(User user, String description, String course) {
+        if (!"Tutor".equals(user.getUserType())) {
+            // Only tutors can update their profile
+            return null;
         }
-        return user;
+
+        try (Connection connection = DbConnection.getConnection()) {
+            int userId = user.getId();
+
+            // Update the description in the "Descriptions" table
+            PreparedStatement updateDescription = connection.prepareStatement(
+                    "UPDATE Descriptions SET description = ? WHERE user_id = ?");
+            updateDescription.setString(1, description);
+            updateDescription.setInt(2, userId);
+            updateDescription.executeUpdate();
+
+            // Update the course in the "Tutors" table
+            PreparedStatement updateCourse = connection.prepareStatement(
+                    "UPDATE Tutors SET course_id = ? WHERE user_id = ?");
+            updateCourse.setString(1, course);
+            updateCourse.setInt(2, userId);
+            updateCourse.executeUpdate();
+
+            // Commit the changes
+            connection.commit();
+
+            return getByUsername(user.getUserName());
+        } catch (SQLException throwable) {
+            throw new RuntimeException(throwable);
+        }
     }
+
+
+
 
 
 

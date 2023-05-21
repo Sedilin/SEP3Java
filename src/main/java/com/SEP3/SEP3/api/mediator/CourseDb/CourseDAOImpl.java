@@ -2,17 +2,16 @@ package com.SEP3.SEP3.api.mediator.CourseDb;
 
 import com.SEP3.SEP3.api.mediator.CourseDb.CourseDAO;
 import com.SEP3.SEP3.api.mediator.DbConnection;
+import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDAOImpl implements CourseDAO {
+    private User user;
 
     @Override
     public List<UserToTutorDto> tutorByCourse(String courseName) {
@@ -76,8 +75,7 @@ public class CourseDAOImpl implements CourseDAO {
             PreparedStatement courseStatement = connection.prepareStatement("SELECT name FROM Courses");
             ResultSet result = courseStatement.executeQuery();
 
-            while (result.next())
-            {
+            while (result.next()) {
                 courses.add(result.getString("name"));
             }
 
@@ -87,4 +85,75 @@ public class CourseDAOImpl implements CourseDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public UserToTutorDto deleteCourse(User user, String course, String description) {
+        try (Connection connection = DbConnection.getConnection()) {
+
+            // Check if the user has only one assigned course
+            PreparedStatement checkCourseCount = connection.prepareStatement(
+                    "SELECT COUNT(*) AS courseCount FROM Tutors WHERE user_id = ?"
+            );
+            checkCourseCount.setInt(1, user.getId());
+            ResultSet countResultSet = checkCourseCount.executeQuery();
+            countResultSet.next();
+            int courseCount = countResultSet.getInt("courseCount");
+
+            if (courseCount == 1) {
+                // Delete the user's course and description
+                PreparedStatement deleteTutorCourse = connection.prepareStatement(
+                        "DELETE FROM Tutors WHERE user_id = ?"
+                );
+                deleteTutorCourse.setInt(1, user.getId());
+                deleteTutorCourse.executeUpdate();
+
+                PreparedStatement deleteDescription = connection.prepareStatement(
+                        "DELETE FROM Descriptions WHERE user_id = ?"
+                );
+                deleteDescription.setInt(1, user.getId());
+                deleteDescription.executeUpdate();
+
+                // Change the user's userType to "User"
+                PreparedStatement changeUserType = connection.prepareStatement(
+                        "UPDATE Users SET userType = 'User' WHERE id = ?"
+                );
+                changeUserType.setInt(1, user.getId());
+                changeUserType.executeUpdate();
+
+                return new UserToTutorDto(user, null, null);
+            } else {
+                // Delete only the specific course
+                PreparedStatement deleteTutorCourse = connection.prepareStatement(
+                        "DELETE FROM Tutors WHERE user_id = ? AND course_id = ?"
+                );
+                deleteTutorCourse.setInt(1, user.getId());
+                deleteTutorCourse.setInt(2, getCourseIdByName(course));
+                deleteTutorCourse.executeUpdate();
+
+                return new UserToTutorDto(user, course, description);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private int getCourseIdByName(String courseName) // needed for delete method
+    {
+        try (Connection connection = DbConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id FROM Courses WHERE name = ?"
+            );
+            statement.setString(1, courseName);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        throw new IllegalArgumentException("Course not found");
+    }
+
+
 }
