@@ -1,19 +1,29 @@
 package com.SEP3.SEP3.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class User {
     private int Id;
     private String UserName;
     private String Password;
     private String UserType;
 
-    private User(){}
 
+    private User(int Id, String UserName, String Password, String userType) {
+        this.UserName = UserName;
+        this.Password = Password;
+        UserType = userType;
+        this.Id = Id;
+    }
+
+    @JsonIgnore
     public User(String UserName, String Password) {
         this.UserName = UserName;
         this.Password = Password;
         UserType = "user";
     }
 
+    @JsonIgnore
     public User(String UserName, String Password, String userType) {
         this.UserName = UserName;
         this.Password = Password;
