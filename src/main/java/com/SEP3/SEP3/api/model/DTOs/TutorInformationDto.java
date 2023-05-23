@@ -39,4 +39,6 @@ public class TutorInformationDto {
     public void setDescription(String description) {
         Description = description;
     }
+
+    public void setCourses(List<String> courses){Courses = courses;}
 }
