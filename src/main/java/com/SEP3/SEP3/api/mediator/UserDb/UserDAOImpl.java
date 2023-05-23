@@ -202,43 +202,68 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User updateProfile(User user, String description, String course) {
-        if (!"Tutor".equals(user.getUserType())) {
-            // Only tutors can update their profile
-            return null;
-        }
-
+    public User updateProfile(User user, String description, List<String> courses) {
         try (Connection connection = DbConnection.getConnection()) {
-            int userId = user.getId();
+            // Delete existing courses for the specific user
+            deleteExistingCourses(connection, user.getId());
 
-            // Update the description in the "Descriptions" table
             PreparedStatement updateDescription = connection.prepareStatement(
-                    "UPDATE Descriptions SET description = ? WHERE user_id = ?");
+                    "UPDATE Descriptions SET description = ? where user_id = ?"
+            );
+            // Set the parameters in the prepared statement
             updateDescription.setString(1, description);
-            updateDescription.setInt(2, userId);
+            updateDescription.setInt(2, user.getId());
+
             updateDescription.executeUpdate();
 
-            // Update the course in the "Tutors" table
+            // Prepare the SQL statement
             PreparedStatement updateCourse = connection.prepareStatement(
-                    "UPDATE Tutors SET course_id = ? WHERE user_id = ?");
-            updateCourse.setString(1, course);
-            updateCourse.setInt(2, userId);
-            updateCourse.executeUpdate();
+                    "INSERT INTO Tutors (user_id, course_id) VALUES (?, ?)");
 
-            // Commit the changes
-            connection.commit();
+            // Iterate over the list of courses
+            for (String course : courses) {
+                // Find the course ID for the given course name
+                int courseId = findCourseId(connection, course);
 
-            return getByUsername(user.getUserName());
-        } catch (SQLException throwable) {
-            throw new RuntimeException(throwable);
+                // Set the parameters in the prepared statement
+                updateCourse.setInt(1, user.getId());
+                updateCourse.setInt(2, courseId);
+
+                // Execute the insert statement
+                updateCourse.executeUpdate();
+            }
+            // Close the prepared statement
+            updateCourse.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+        // Helper method to delete existing courses for a specific user
+        private void deleteExistingCourses(Connection connection, int userId) throws SQLException {
+            try (PreparedStatement deleteCourses = connection.prepareStatement(
+                    "DELETE FROM Tutors WHERE user_id = ?")) {
+                deleteCourses.setInt(1, userId);
+                deleteCourses.executeUpdate();
+            }
+        }
+
+        // Helper method to find the course ID for a given course name
+        private int findCourseId(Connection connection, String courseName) throws SQLException {
+            int courseId = -1;  // Default value if the course is not found
+
+            try (PreparedStatement findCourse = connection.prepareStatement(
+                    "SELECT id FROM Courses WHERE name = ?")) {
+                findCourse.setString(1, courseName);
+
+                try (ResultSet resultSet = findCourse.executeQuery()) {
+                    if (resultSet.next()) {
+                        courseId = resultSet.getInt("id");
+                    }
+                }
+            }
+
+            return courseId;
         }
     }
-
-
-
-
-
-
-
-}
 

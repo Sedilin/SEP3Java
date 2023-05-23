@@ -4,6 +4,7 @@ import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public interface UserDAO {
 
     TutorInformationDto getTutor(String userName);
 
-     User updateProfile(User user, String description, String course);
+     User updateProfile(User user, String description, List<String> course);
 
 
 }

@@ -7,6 +7,7 @@ import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +55,8 @@ public class UserService {
     }
 
 
-    public User updateProfile (User user, String description, String course) {
-        return users.updateProfile(user, course, description);
+    public User updateProfile (User user, String description, List<String> courses) {
+        return users.updateProfile(user, description, courses);
     }
 
 

@@ -94,8 +94,8 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<User> updateProfile(@RequestBody UserToTutorDto dto) {
-        User updatedUser = userService.updateProfile(dto.getUser(), dto.getDescription(), dto.getCourse());
+    public ResponseEntity<User> updateProfile(@RequestBody TutorInformationDto dto) {
+        User updatedUser = userService.updateProfile(dto.getUser(), dto.getDescription(), dto.getCourses());
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {
