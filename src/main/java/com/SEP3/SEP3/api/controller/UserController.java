@@ -3,6 +3,7 @@ package com.SEP3.SEP3.api.controller;
 import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
+import com.SEP3.SEP3.persistance.IServices.IUserService;
 import com.SEP3.SEP3.persistance.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,10 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(IUserService userService) {
         this.userService = userService;
     }
 

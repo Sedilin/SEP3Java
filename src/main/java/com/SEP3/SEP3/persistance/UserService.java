@@ -5,6 +5,7 @@ import com.SEP3.SEP3.api.mediator.UserDb.UserDAOImpl;
 import com.SEP3.SEP3.api.model.DTOs.TutorInformationDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.api.model.User;
+import com.SEP3.SEP3.persistance.IServices.IUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
 
     UserDAO users;
 
@@ -58,6 +59,4 @@ public class UserService {
     public User updateProfile (User user, String description, List<String> courses) {
         return users.updateProfile(user, description, courses);
     }
-
-
 }

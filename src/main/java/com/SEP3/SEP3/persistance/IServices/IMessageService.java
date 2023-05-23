@@ -1,4 +1,4 @@
-package com.SEP3.SEP3.persistance;
+package com.SEP3.SEP3.persistance.IServices;
 
 import com.SEP3.SEP3.api.model.User;
 import org.springframework.stereotype.Service;

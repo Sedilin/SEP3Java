@@ -3,10 +3,11 @@ package com.SEP3.SEP3.persistance;
 import com.SEP3.SEP3.api.mediator.MessageDb.MessageDAO;
 import com.SEP3.SEP3.api.mediator.MessageDb.MessageDAOImpl;
 import com.SEP3.SEP3.api.model.User;
+import com.SEP3.SEP3.persistance.IServices.IMessageService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MessageService implements IMessageService{
+public class MessageService implements IMessageService {
 
     private MessageDAO message;
 

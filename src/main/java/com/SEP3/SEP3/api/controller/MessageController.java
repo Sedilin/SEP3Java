@@ -1,7 +1,7 @@
 package com.SEP3.SEP3.api.controller;
 
 import com.SEP3.SEP3.api.model.DTOs.MessageDto;
-import com.SEP3.SEP3.persistance.IMessageService;
+import com.SEP3.SEP3.persistance.IServices.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
