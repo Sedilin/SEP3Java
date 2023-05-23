@@ -1,7 +1,6 @@
 package com.SEP3.SEP3.api.controller;
 
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
-import com.SEP3.SEP3.persistance.CourseService;
 import com.SEP3.SEP3.persistance.IServices.ICourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,11 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/archive")
 public class MessageController {
 
     private IMessageService messageService;
+
     @Autowired
     public MessageController(IMessageService messageService) {
         this.messageService = messageService;
@@ -22,6 +25,17 @@ public class MessageController {
         boolean success = messageService.archiveMessage(dto.getSender(), dto.getMessage(), dto.getReceiver());
         if (success) {
             return new ResponseEntity<>(success, HttpStatus.OK);//ResponseEntity.noContent().build(); Send back an empty response entity with status 200 (OK)
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<MessageDto>> showMessages(@RequestParam("LoggedUserId") int loggedUserId,
+                                                         @RequestParam("OtherUserId") int otherUserId) {
+        List<MessageDto> success = messageService.showMessages(loggedUserId, otherUserId);
+        if (success != null) {
+            return new ResponseEntity<>(success, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

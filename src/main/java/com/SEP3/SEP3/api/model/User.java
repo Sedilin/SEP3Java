@@ -1,63 +1,66 @@
 package com.SEP3.SEP3.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
-    private int Id;
-    private String UserName;
-    private String Password;
-    private String UserType;
+    private int id;
+    private String userName;
+    private String password;
+    private String userType;
 
 
-    private User(int Id, String UserName, String Password, String userType) {
-        this.UserName = UserName;
-        this.Password = Password;
-        UserType = userType;
-        this.Id = Id;
+    public User(int id, String userName, String password, String userType) {
+        this.userName = userName;
+        this.password = password;
+        this.userType = userType;
+        this.id = id;
     }
 
     @JsonIgnore
-    public User(String UserName, String Password) {
-        this.UserName = UserName;
-        this.Password = Password;
-        UserType = "user";
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+        userType = "user";
     }
 
     @JsonIgnore
-    public User(String UserName, String Password, String userType) {
-        this.UserName = UserName;
-        this.Password = Password;
-        UserType = userType;
+    public User(String userName, String password, String userType) {
+        this.userName = userName;
+        this.password = password;
+        this.userType = userType;
     }
 
+    @JsonProperty("Id")
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
-
+    @JsonProperty("UserName")
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        UserName = userName;
+        this.userName = userName;
     }
-
+    @JsonProperty("Password")
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
+    @JsonProperty("UserType")
     public String getUserType() {
-        return UserType;
+        return userType;
     }
 
     public void setUserType(String userType) {
-        UserType = userType;
+        this.userType = userType;
     }
 }

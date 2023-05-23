@@ -2,39 +2,44 @@ package com.SEP3.SEP3.api.model.DTOs;
 
 
 import com.SEP3.SEP3.api.model.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MessageDto {
-    private User Sender;
-    private User Receiver;
-   private String Message;
+    private User sender;
+    private User receiver;
+   private String message;
 
-    public MessageDto(User Sender, User Receiver, String Message) {
-        this.Sender = Sender;
-        this.Receiver = Receiver;
-        this.Message = Message;
+    public MessageDto(User sender, User receiver, String message)
+    {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
     }
 
+    @JsonProperty("Sender")
     public User getSender() {
-        return Sender;
+        return sender;
     }
 
     public void setSender(User sender) {
-        this.Sender = sender;
+        this.sender = sender;
     }
 
+    @JsonProperty("Receiver")
     public User getReceiver() {
-        return Receiver;
+        return receiver;
     }
 
     public void setReceiver(User receiver) {
-        this.Receiver = receiver;
+        this.receiver = receiver;
     }
 
+    @JsonProperty("Message")
     public String getMessage() {
-        return Message;
+        return message;
     }
 
     public void setMessage(String message) {
-        this.Message = message;
+        this.message = message;
     }
 }
