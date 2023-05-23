@@ -14,4 +14,6 @@ public interface IUserService {
     Optional<User> getTutorByUsername(String username);
     TutorInformationDto getTutor(String userName);
     User updateProfile (User user, String description, List<String> courses);
+
+    boolean deleteAccount(int userId);
 }

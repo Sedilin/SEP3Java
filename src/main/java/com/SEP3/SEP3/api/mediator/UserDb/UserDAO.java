@@ -25,4 +25,5 @@ public interface UserDAO {
      User updateProfile(User user, String description, List<String> course);
 
 
+    boolean deleteAccount(int userId);
 }

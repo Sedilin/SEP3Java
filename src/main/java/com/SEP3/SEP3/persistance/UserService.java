@@ -59,4 +59,9 @@ public class UserService implements IUserService {
     public User updateProfile (User user, String description, List<String> courses) {
         return users.updateProfile(user, description, courses);
     }
+
+    @Override
+    public boolean deleteAccount(int userId) {
+        return users.deleteAccount(userId);
+    }
 }

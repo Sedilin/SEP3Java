@@ -239,7 +239,25 @@ public class UserDAOImpl implements UserDAO {
         }
         return user;
     }
-        // Helper method to delete existing courses for a specific user
+
+    @Override
+    public boolean deleteAccount(int userId) {
+        try (Connection connection = DbConnection.getConnection()) {
+            PreparedStatement statement2 = connection.prepareStatement("DELETE FROM Users WHERE id = ?");
+            statement2.setInt(1, userId);
+
+            statement2.executeUpdate();
+            connection.close();
+
+            return true;
+
+        } catch (SQLException throwable) {
+
+            return false;
+        }
+    }
+
+    // Helper method to delete existing courses for a specific user
         private void deleteExistingCourses(Connection connection, int userId) throws SQLException {
             try (PreparedStatement deleteCourses = connection.prepareStatement(
                     "DELETE FROM Tutors WHERE user_id = ?")) {

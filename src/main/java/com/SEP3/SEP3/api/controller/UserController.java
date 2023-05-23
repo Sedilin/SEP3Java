@@ -104,6 +104,16 @@ public class UserController {
         }
     }
 
-
-
+    @DeleteMapping("removeAccount")
+    public ResponseEntity deleteAccount(@RequestParam int userId)
+    {
+        boolean isCompleted = userService.deleteAccount(userId);
+        if (isCompleted == true)
+        {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
