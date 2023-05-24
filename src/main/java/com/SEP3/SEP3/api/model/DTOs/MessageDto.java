@@ -15,6 +15,7 @@ public class MessageDto {
         this.receiver = receiver;
         this.message = message;
     }
+    public MessageDto() {};
     @JsonProperty("Sender")
     public User getSender() {
         return sender;

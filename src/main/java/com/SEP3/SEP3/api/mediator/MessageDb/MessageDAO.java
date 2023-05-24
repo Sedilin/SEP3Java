@@ -8,7 +8,7 @@ import java.util.List;
 public interface MessageDAO {
     boolean archiveMessage(User sender, String message, User receiver);
     List<MessageDto> showMessages(int loggedUserId, int otherUserId);
-
+    List<User> showConversation(int loggedUserId);
     boolean deleteConversation(int loggedUserId, int otherUserId);
 
 }

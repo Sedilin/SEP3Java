@@ -2,6 +2,7 @@ package com.SEP3.SEP3.api.controller;
 
 import com.SEP3.SEP3.api.model.DTOs.MessageDto;
 import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
+import com.SEP3.SEP3.api.model.User;
 import com.SEP3.SEP3.persistance.IServices.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,15 @@ public class MessageController {
     public ResponseEntity<List<MessageDto>> showMessages(@RequestParam("LoggedUserId") int loggedUserId,
                                                          @RequestParam("OtherUserId") int otherUserId) {
         List<MessageDto> success = messageService.showMessages(loggedUserId, otherUserId);
+        if (success != null) {
+            return new ResponseEntity<>(success, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/getUsers")
+    public ResponseEntity<List<User>> showConversations(@RequestParam("LoggedUserId") int loggedUserId) {
+        List<User> success = messageService.showConversation(loggedUserId);
         if (success != null) {
             return new ResponseEntity<>(success, HttpStatus.OK);
         } else {

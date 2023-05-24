@@ -92,21 +92,52 @@ public class MessageDAOImpl implements MessageDAO {
     }
 
     @Override
+    public List<User> showConversation(int loggedUserId) {
+        try (Connection connection = DbConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT *\n" +
+                    "FROM Users\n" +
+                    "WHERE id IN (SELECT DISTINCT sender_id\n" +
+                    "             FROM Messages\n" +
+                    "             WHERE recipient_id == ?) OR id IN (SELECT DISTINCT recipient_id\n" +
+                    "                                          FROM Messages\n" +
+                    "                                          WHERE sender_id == ?);");
+
+            statement.setInt(1, loggedUserId);
+            statement.setInt(2, loggedUserId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            List<User> users = new ArrayList<>();
+
+            while (resultSet.next()) {
+
+                int id = resultSet.getInt("id");
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                String userType = resultSet.getString("userType");
+
+                users.add(new User(id, username, password, userType));
+            }
+
+            return users;
+
+        } catch (SQLException throwable) {
+
+            throw new RuntimeException(throwable);
+        }
+    }
+
+    @Override
     public boolean deleteConversation(int loggedUserId, int otherUserId) {
         try (Connection connection = DbConnection.getConnection()){
             // Delete messages from the sender's side
-            String deleteSenderQuery = "DELETE FROM Messages WHERE sender_id = ? AND recipient_id = ?";
+            String deleteSenderQuery = "DELETE FROM Messages WHERE (sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)";
             PreparedStatement deleteSenderStmt = connection.prepareStatement(deleteSenderQuery);
             deleteSenderStmt.setInt(1, loggedUserId);
             deleteSenderStmt.setInt(2, otherUserId);
+            deleteSenderStmt.setInt(3, otherUserId);
+            deleteSenderStmt.setInt(4, loggedUserId);
             deleteSenderStmt.executeUpdate();
-
-            // Delete messages from the receiver's side
-            String deleteReceiverQuery = "DELETE FROM Messages WHERE sender_id = ? AND recipient_id = ?";
-            PreparedStatement deleteReceiverStmt = connection.prepareStatement(deleteReceiverQuery);
-            deleteReceiverStmt.setInt(1, otherUserId);
-            deleteReceiverStmt.setInt(2, loggedUserId);
-            deleteReceiverStmt.executeUpdate();
 
             return true; // Deletion successful
         } catch (SQLException e) {
