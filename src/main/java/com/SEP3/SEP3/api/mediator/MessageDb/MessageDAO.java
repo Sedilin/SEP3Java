@@ -9,4 +9,6 @@ public interface MessageDAO {
     boolean archiveMessage(User sender, String message, User receiver);
     List<MessageDto> showMessages(int loggedUserId, int otherUserId);
 
+    boolean deleteConversation(int loggedUserId, int otherUserId);
+
 }

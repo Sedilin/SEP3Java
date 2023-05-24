@@ -27,4 +27,9 @@ public class MessageService implements IMessageService {
     public List<MessageDto> showMessages(int loggedUserId, int otherUserId) {
         return message.showMessages(loggedUserId, otherUserId);
     }
+
+    @Override
+    public boolean deleteConversations(int loggedUserId, int otherUserId) {
+        return this.message.deleteConversation( loggedUserId, otherUserId);
+    }
 }

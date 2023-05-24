@@ -10,4 +10,6 @@ import java.util.List;
 public interface IMessageService {
     boolean archiveMessage(User sender, String message, User receiver);
     List<MessageDto> showMessages(int loggedUserId, int otherUserId);
+
+    boolean deleteConversations (int loggedUserId, int otherUserId);
 }

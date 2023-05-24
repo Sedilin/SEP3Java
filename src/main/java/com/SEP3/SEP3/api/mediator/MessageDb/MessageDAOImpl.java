@@ -90,6 +90,32 @@ public class MessageDAOImpl implements MessageDAO {
             throw new RuntimeException(throwable);
         }
     }
+
+    @Override
+    public boolean deleteConversation(int loggedUserId, int otherUserId) {
+        try (Connection connection = DbConnection.getConnection()){
+            // Delete messages from the sender's side
+            String deleteSenderQuery = "DELETE FROM Messages WHERE sender_id = ? AND recipient_id = ?";
+            PreparedStatement deleteSenderStmt = connection.prepareStatement(deleteSenderQuery);
+            deleteSenderStmt.setInt(1, loggedUserId);
+            deleteSenderStmt.setInt(2, otherUserId);
+            deleteSenderStmt.executeUpdate();
+
+            // Delete messages from the receiver's side
+            String deleteReceiverQuery = "DELETE FROM Messages WHERE sender_id = ? AND recipient_id = ?";
+            PreparedStatement deleteReceiverStmt = connection.prepareStatement(deleteReceiverQuery);
+            deleteReceiverStmt.setInt(1, otherUserId);
+            deleteReceiverStmt.setInt(2, loggedUserId);
+            deleteReceiverStmt.executeUpdate();
+
+            return true; // Deletion successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Deletion failed
+        }
+    }
+
+
 }
 
 

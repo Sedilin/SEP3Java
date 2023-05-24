@@ -1,6 +1,7 @@
 package com.SEP3.SEP3.api.controller;
 
 import com.SEP3.SEP3.api.model.DTOs.MessageDto;
+import com.SEP3.SEP3.api.model.DTOs.UserToTutorDto;
 import com.SEP3.SEP3.persistance.IServices.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/archive")
@@ -40,4 +42,15 @@ public class MessageController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @DeleteMapping()
+    public ResponseEntity deleteMessages(@RequestParam("LoggedUserId") int loggedUserId,
+                                                         @RequestParam("OtherUserId") int otherUserId) {
+        boolean success = messageService.deleteConversations(loggedUserId, otherUserId);
+        if (success) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
