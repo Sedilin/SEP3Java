@@ -53,11 +53,11 @@ public class MessageController {
         }
     }
     @DeleteMapping()
-    public ResponseEntity deleteMessages(@RequestParam("LoggedUserId") int loggedUserId,
+    public ResponseEntity<Boolean> deleteMessages(@RequestParam("LoggedUserId") int loggedUserId,
                                                          @RequestParam("OtherUserId") int otherUserId) {
         boolean success = messageService.deleteConversations(loggedUserId, otherUserId);
         if (success) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(success, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
